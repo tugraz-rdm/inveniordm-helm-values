@@ -1,0 +1,86 @@
+host: inveniordm.cyverse.at
+
+invenio:
+  hostname: inveniordm.cyverse.at
+  init: true
+  demo_data: false
+  default_users:
+    "admin@inveniordm.cyverse.at": "1234567"
+    "user01@inveniordm.cyverse.at": "7891011"
+    "user02@inveniordm.cyverse.at": "121314"
+  extraConfig:
+    SECURITY_REGISTERABLE: "false"
+
+postgresql:
+  enabled: true
+  auth:
+    username: "invenio"
+    password: "invenio123"
+    database: "invenio"
+
+redis:
+  enabled: true
+  replica:
+    replicaCount: 1
+
+rabbitmq:
+  enabled: true
+  auth:
+    username: "guest"
+    password: "guest123"
+    existingPasswordSecret: ""
+    existingSecretPasswordKey: "rabbitmq-password"
+
+opensearch:
+  enabled: true
+  master:
+    replicas: 1
+    resources:
+      requests:
+        memory: 512Mi
+        cpu: 20m
+      limits:
+        memory: 2Gi
+        cpu: 1
+  data:
+    replicas: 1
+    resources:
+      requests:
+        memory: 512Mi
+        cpu: 20m
+      limits:
+        memory: 2Gi
+        cpu: 1
+  coordinating:
+    replicas: 1
+    resources:
+      requests:
+        memory: 512Mi
+        cpu: 20m
+      limits:
+        memory: 2Gi
+        cpu: 1
+  ingest:
+    replicas: 1
+    resources:
+      requests:
+        memory: 512Mi
+        cpu: 20m
+      limits:
+        memory: 2Gi
+        cpu: 1
+
+persistence:
+  enabled: true
+  access_mode: ReadWriteMany
+  storage_class: nfs-client
+  size: 10G
+
+web:
+  replicas: 1
+  startupProbe:
+    timeoutSeconds: 30
+    failureThreshold: 10
+
+worker:
+  replicas: 1
