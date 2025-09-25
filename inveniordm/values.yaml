@@ -1,15 +1,14 @@
 host: inveniordm.cyverse.at
 
-# Custom image configuration for testing
-image:
-  repository: ghcr.io/sharedrdm/instance
-  tag: official-v13-mug
-  pullPolicy: Always
-
 invenio:
   hostname: inveniordm.cyverse.at
   init: true
   demo_data: false
+  # Custom image configuration for testing
+  image:
+    repository: ghcr.io/sharedrdm/instance
+    tag: official-v13-mug
+    pullPolicy: Always
   default_users:
     # user passwords are managed via Vault secrets
     "admin@inveniordm.cyverse.at": ""

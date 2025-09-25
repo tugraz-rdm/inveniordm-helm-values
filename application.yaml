@@ -7,8 +7,8 @@ spec:
   project: invenio-project
   sources:
     - repoURL: https://github.com/lpandath/inveniordm-helm-values.git
-      targetRevision: HEAD
-      path: inveniordm
+      targetRevision: feature/vault-integration-restructure
+      ref: values
     - repoURL: https://inveniosoftware.github.io/helm-invenio/
       chart: invenio
       targetRevision: "0.8.1"
