@@ -1,0 +1,97 @@
+host: inveniordm.cyverse.at
+
+# Custom image configuration for testing
+image:
+  repository: ghcr.io/sharedrdm/instance
+  tag: official-v13-mug
+  pullPolicy: Always
+
+invenio:
+  hostname: inveniordm.cyverse.at
+  init: true
+  demo_data: false
+  default_users:
+    # user passwords are managed via Vault secrets
+    "admin@inveniordm.cyverse.at": ""
+    "user01@inveniordm.cyverse.at": ""
+    "user02@inveniordm.cyverse.at": ""
+  extraConfig:
+    SECURITY_REGISTERABLE: "false"
+  existingSecret: "invenio-users-vault-secret"
+
+postgresql:
+  enabled: true
+  auth:
+    username: "invenio"
+    # Password managed by Vault
+    existingSecret: "postgresql-vault-secret"
+    secretKeys:
+      adminPasswordKey: "postgres-password"
+      userPasswordKey: "password"
+    database: "invenio"
+
+redis:
+  enabled: true
+  replica:
+    replicaCount: 1
+
+rabbitmq:
+  enabled: true
+  auth:
+    username: "guest"
+    existingPasswordSecret: "rabbitmq-vault-secret"
+    existingSecretPasswordKey: "rabbitmq-password"
+
+opensearch:
+  enabled: true
+  master:
+    replicas: 1
+    resources:
+      requests:
+        memory: 512Mi
+        cpu: 20m
+      limits:
+        memory: 2Gi
+        cpu: 1
+  data:
+    replicas: 1
+    resources:
+      requests:
+        memory: 512Mi
+        cpu: 20m
+      limits:
+        memory: 2Gi
+        cpu: 1
+  coordinating:
+    replicas: 1
+    resources:
+      requests:
+        memory: 512Mi
+        cpu: 20m
+      limits:
+        memory: 2Gi
+        cpu: 1
+  ingest:
+    replicas: 1
+    resources:
+      requests:
+        memory: 512Mi
+        cpu: 20m
+      limits:
+        memory: 2Gi
+        cpu: 1
+
+persistence:
+  enabled: true
+  access_mode: ReadWriteMany
+  storage_class: "nfs-client"
+  size: 10G
+
+web:
+  replicas: 1
+  startupProbe:
+    timeoutSeconds: 30
+    failureThreshold: 10
+
+worker:
+  replicas: 1
