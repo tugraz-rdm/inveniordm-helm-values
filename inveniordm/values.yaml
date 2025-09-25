@@ -11,9 +11,9 @@ invenio:
     pullPolicy: Always
   default_users:
     # user passwords are managed via Vault secrets
-    "admin@inveniordm.cyverse.at": ""
-    "user01@inveniordm.cyverse.at": ""
-    "user02@inveniordm.cyverse.at": ""
+    "admin@inveniordm.cyverse.at": <path:secret/invenio/users#ADMIN_PASSWORD>
+    "user01@inveniordm.cyverse.at": <path:secret/invenio/users#USER01_PASSWORD>
+    "user02@inveniordm.cyverse.at": <path:secret/invenio/users#USER02_PASSWORD>
   extraConfig:
     SECURITY_REGISTERABLE: "false"
   existingSecret: "invenio-users-vault-secret"
@@ -22,11 +22,9 @@ postgresql:
   enabled: true
   auth:
     username: "invenio"
-    # Password managed by Vault
-    existingSecret: "postgresql-vault-secret"
-    secretKeys:
-      adminPasswordKey: "postgres-password"
-      userPasswordKey: "password"
+    # Passwords managed by Vault paths
+    password: <path:secret/invenio/database#USER_PASSWORD>
+    postgresPassword: <path:secret/invenio/database#POSTGRES_PASSWORD>
     database: "invenio"
 
 redis:
@@ -38,8 +36,7 @@ rabbitmq:
   enabled: true
   auth:
     username: "guest"
-    existingPasswordSecret: "rabbitmq-vault-secret"
-    existingSecretPasswordKey: "rabbitmq-password"
+    password: <path:secret/invenio/messaging#RABBITMQ_PASSWORD>
 
 opensearch:
   enabled: true
