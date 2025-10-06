@@ -10,19 +10,16 @@ invenio:
     tag: official-v13-mug
     pullPolicy: Always
   default_users:
-    # user passwords are managed via Vault secrets
     "admin@inveniordm.cyverse.at": <path:secret/invenio/users#ADMIN_PASSWORD>
     "user01@inveniordm.cyverse.at": <path:secret/invenio/users#USER01_PASSWORD>
     "user02@inveniordm.cyverse.at": <path:secret/invenio/users#USER02_PASSWORD>
   extraConfig:
     SECURITY_REGISTERABLE: "false"
-  existingSecret: "invenio-users-vault-secret"
 
 postgresql:
   enabled: true
   auth:
     username: "invenio"
-    # Passwords managed by Vault paths
     password: <path:secret/invenio/database#USER_PASSWORD>
     postgresPassword: <path:secret/invenio/database#POSTGRES_PASSWORD>
     database: "invenio"
@@ -36,6 +33,7 @@ rabbitmq:
   enabled: true
   auth:
     username: "guest"
+    # Password fetched from Vault via ArgoCD Vault Plugin
     password: <path:secret/invenio/messaging#RABBITMQ_PASSWORD>
 
 opensearch:
@@ -91,3 +89,6 @@ web:
 
 worker:
   replicas: 1
+
+flower:
+  enabled: false

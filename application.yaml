@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: inveniordm
   namespace: argocd
+  annotations:
+    avp.kubernetes.io/path: "secret/data/invenio"
 spec:
   project: invenio-project
   sources:
