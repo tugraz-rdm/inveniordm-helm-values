@@ -16,7 +16,7 @@ spec:
       targetRevision: "0.8.1"
       helm:
         valueFiles:
-        - $values/inveniordm/values.yaml
+          - $values/inveniordm/values.yaml
 
   destination:
     server: https://kubernetes.default.svc
