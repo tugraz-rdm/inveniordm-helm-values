@@ -3,20 +3,19 @@ kind: Application
 metadata:
   name: inveniordm
   namespace: argocd
-  annotations:
-    avp.kubernetes.io/path: "secret/data/invenio"
 spec:
   project: invenio-project
   sources:
-    - repoURL: https://github.com/lpandath/inveniordm-helm-values.git
-      targetRevision: feature/vault-integration-restructure
-      ref: values
     - repoURL: https://inveniosoftware.github.io/helm-invenio/
       chart: invenio
       targetRevision: "0.8.1"
-      helm:
-        valueFiles:
-          - $values/inveniordm/values.yaml
+      plugin:
+        name: argocd-vault-plugin-helm-files
+        env:
+          - name: HELM_VALUES_REPO
+            value: "https://github.com/lpandath/inveniordm-helm-values"
+          - name: HELM_VALUES_DIR
+            value: "inveniordm-helm-values/inveniordm"
 
   destination:
     server: https://kubernetes.default.svc
