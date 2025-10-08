@@ -1,0 +1,9 @@
+apiVersion: v2
+name: inveniordm
+description: InvenioRDM instance with Vault integration
+type: application
+version: 0.1.0
+dependencies:
+  - name: invenio
+    version: "0.8.1"
+    repository: "https://inveniosoftware.github.io/helm-invenio/"

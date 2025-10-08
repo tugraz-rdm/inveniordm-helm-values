@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: inveniordm 
+  namespace: argocd
+  annotations:
+    avp.kubernetes.io/path: "secrets/invenio/data"
+spec:
+  project: invenio-project
+  source:
+    repoURL: https://inveniosoftware.github.io/helm-invenio/
+    targetRevision: "0.8.1"
+    chart: invenio
+    plugin:
+      name: argocd-vault-plugin-files
+      env:
+        - name: HELM_VALUES_REPO
+          value: "https://github.com/lpandath/inveniordm-helm-values"
+        - name: HELM_VALUES_DIR
+          value: "inveniordm-helm-values/inveniordm"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: invenio
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

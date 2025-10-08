@@ -4,10 +4,15 @@ invenio:
   hostname: inveniordm.cyverse.at
   init: true
   demo_data: false
+  # Custom image configuration for testing
+  image:
+    repository: ghcr.io/sharedrdm/instance
+    tag: official-v13-mug
+    pullPolicy: Always
   default_users:
-    "admin@inveniordm.cyverse.at": "1234567"
-    "user01@inveniordm.cyverse.at": "7891011"
-    "user02@inveniordm.cyverse.at": "121314"
+    "admin@inveniordm.cyverse.at": <path:secrets/invenio/data/invenio-users#ADMIN_PASSWORD>
+    "user01@inveniordm.cyverse.at": <path:secrets/invenio/data/invenio-users#USER01_PASSWORD>
+    "user02@inveniordm.cyverse.at": <path:secrets/invenio/data/invenio-users#USER02_PASSWORD>
   extraConfig:
     SECURITY_REGISTERABLE: "false"
 
@@ -15,7 +20,8 @@ postgresql:
   enabled: true
   auth:
     username: "invenio"
-    password: "invenio123"
+    password: <path:secrets/invenio/data/db-invenio#USER_PASSWORD>
+    postgresPassword: <path:secrets/invenio/data/db-invenio#POSTGRES_PASSWORD>
     database: "invenio"
 
 redis:
@@ -26,10 +32,11 @@ redis:
 rabbitmq:
   enabled: true
   auth:
-    username: "guest"
-    password: "guest123"
-    existingPasswordSecret: ""
-    existingSecretPasswordKey: "rabbitmq-password"
+    username: "invenio"
+    password: <path:secrets/invenio/data/msg-invenio#RABBITMQ_PASSWORD>
+  extraConfiguration: |
+    default_user_tags.administrator = true
+    default_user_tags.management = true
 
 opensearch:
   enabled: true
@@ -73,7 +80,7 @@ opensearch:
 persistence:
   enabled: true
   access_mode: ReadWriteMany
-  storage_class: nfs-client
+  storage_class: "nfs-client"
   size: 10G
 
 web:
@@ -84,3 +91,6 @@ web:
 
 worker:
   replicas: 1
+
+flower:
+  enabled: false
